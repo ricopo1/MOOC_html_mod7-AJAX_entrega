@@ -3,7 +3,7 @@
 <img  align="right" width="150" style="float: right;" src="https://miriadax.net/miriadax-theme/images/custom/logo_miriadax_new.svg">
 
 <br/><br/><br/>
-# Módulo 7: Excepciones, Promesas, HTTP, AJAX y jQuery- MVC Películas AJAX
+# Módulo 7: Excepciones, Promesas, HTTP, AJAX y jQuery - Entrega P2P: MVC Películas AJAX
 Versión: 24 de Mayo de 2020
 
 ## Objetivos
