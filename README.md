@@ -93,3 +93,12 @@ $ npx moocauto                 ## Pasa los tests al fichero a entregar
 ```
 
 Se puede pasar la herramienta de autocorrección tantas veces como se desee.
+
+A la hora de evaluar, el evaluador tendrá que seguir los siguientes criterios:
+
+**RÚBRICA:** Se puntuará el ejercicio a corregir sumando el % indicado a la nota total si la parte indicada es correcta:
+
+- **25%:** Se muestran correctamente las películas recibidas a través de la API.
+- **25%:** Se crean películas nuevas a través de la API.
+- **25%:** Se borran películas existentes a través de la API.
+- **25%:** Se resetea la API para que devuelva las películas iniciales.
