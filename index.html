@@ -1,10 +1,22 @@
-<!doctype html><html><head><meta charset="utf-8">
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
     <title>Mis Películas</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <style>
-        body { --primary: #6200ee; --secondary: #29b6f6; margin: 0px;}
-        * {font-family: 'Roboto', sans-serif;}
-        button { 
+        body {
+            --primary: #6200ee;
+            --secondary: #29b6f6;
+            margin: 0px;
+        }
+
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        button {
             -webkit-font-smoothing: antialiased;
             display: inline-block;
             text-decoration: none;
@@ -19,17 +31,77 @@
             transition: ease-in 0.2s all;
             padding: 0 8px 0 8px;
         }
-        div#main {padding: 10px;}
-        input {margin-bottom: 5px; margin-top: 2px; padding: 4px; font-size: 12px; }
-        h1 {background: var(--primary); color: white; font-weight: 300; text-transform: uppercase; font-size: 20px; margin: 0px; padding: 15px;}
-        h2 { margin-block-start: 0px; margin-block-end: 10px; font-size: 20px;  color: var(--primary);}
-        button:hover { background: var(--primary); color: white; }
-        div.actions { margin-top: 10px;}
-        div.movie {display: inline-block; width: auto; padding: 10px; box-shadow: 2px 2px 7px #ccc; margin: 5px;}
-        div.movie div.movie-img {width: 200px; height: auto; min-height: 200px; cursor: pointer;}
-        div.movie div.movie-img img {width: 100%; height: auto;}
-        div.movie div.title {text-align: center; overflow: hidden; text-overflow: ellipsis; width: 200px; white-space: nowrap; }
-        div.field {color: var(--primary); text-transform: uppercase; font-size: 12px;}
+
+        div#main {
+            padding: 10px;
+        }
+
+        input {
+            margin-bottom: 5px;
+            margin-top: 2px;
+            padding: 4px;
+            font-size: 12px;
+        }
+
+        h1 {
+            background: var(--primary);
+            color: white;
+            font-weight: 300;
+            text-transform: uppercase;
+            font-size: 20px;
+            margin: 0px;
+            padding: 15px;
+        }
+
+        h2 {
+            margin-block-start: 0px;
+            margin-block-end: 10px;
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        div.actions {
+            margin-top: 10px;
+        }
+
+        div.movie {
+            display: inline-block;
+            width: auto;
+            padding: 10px;
+            box-shadow: 2px 2px 7px #ccc;
+            margin: 5px;
+        }
+
+        div.movie div.movie-img {
+            width: 200px;
+            height: auto;
+            min-height: 200px;
+            cursor: pointer;
+        }
+
+        div.movie div.movie-img img {
+            width: 100%;
+            height: auto;
+        }
+
+        div.movie div.title {
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 200px;
+            white-space: nowrap;
+        }
+
+        div.field {
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 12px;
+        }
     </style>
 
     <script type="text/javascript">
@@ -37,9 +109,9 @@
         // MODELO DE DATOS
 
         let mis_peliculas_iniciales = [
-           {titulo: "Superlópez",   director: "Javier Ruiz Caldera", "miniatura": "files/superlopez.png"},
-           {titulo: "Jurassic Park", director: "Steven Spielberg", "miniatura": "files/jurassicpark.png"},
-           {titulo: "Interstellar",  director: "Christopher Nolan", "miniatura": "files/interstellar.png"}
+            { titulo: "Superlópez", director: "Javier Ruiz Caldera", "miniatura": "files/superlopez.png" },
+            { titulo: "Jurassic Park", director: "Steven Spielberg", "miniatura": "files/jurassicpark.png" },
+            { titulo: "Interstellar", director: "Christopher Nolan", "miniatura": "files/interstellar.png" }
         ];
 
         let mis_peliculas = [];
@@ -47,36 +119,55 @@
         const postAPI = async (peliculas) => {
             try {
                 const res = await fetch("https://myjson.dit.upm.es/api/bins", {
-                  method: 'POST', 
-                  headers:{
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(peliculas)
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(peliculas)
                 });
-                const {uri} = await res.json();
-                return uri;               
+                const { uri } = await res.json();
+                return uri;
             } catch (err) {
                 alert("No se ha podido crear el endpoint.")
             }
         }
-        const getAPI = async () => {
+        const getAPI = async (i) => {
             // Completar: Llamar a la API para leer la información guardada en myjson a través de la API
+            try {
+                const response = await fetch(localStorage.URL);
+                const data = await response.json();
+                return data;
+            } catch (err) {
+                alert(`Error al intentar leer información del endpoint. Err: ${err}`);
+            }
 
-          
+
         }
         const updateAPI = async (peliculas) => {
             // Completar: Actualizar la información a través de la API
+            console.log(JSON.stringify(peliculas))
+            try {
+                const response = await fetch(localStorage.URL, {
+                    method: 'PUT',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(peliculas)
+                });
+            } catch (err) {
+                alert(`Error al intentar modificar una película. Err: ${err}`);
+            }
         }
 
- 
+
         // VISTAS
 
         const indexView = (peliculas) => {
-            let i=0;
+            let i = 0;
             let view = "";
 
-            while(i < peliculas.length) {
-              view += `
+            while (i < peliculas.length) {
+                view += `
                 <div class="movie">
                    <div class="movie-img">
                         <img class="show" data-my-id="${i}" src="${peliculas[i].miniatura}" onerror="this.src='files/placeholder.png'"/>
@@ -85,14 +176,17 @@
                        ${peliculas[i].titulo || "<em>Sin título</em>"}
                    </div>
                    <div class="actions">
+                       <button class="show" data-my-id="${i}">Ver</button>
                        <button class="edit" data-my-id="${i}">editar</button>
+                       <button class="delete" data-my-id="${i}">Borrar</button>
                     </div>
                 </div>\n`;
-              i = i + 1;
+                i = i + 1;
             };
 
             view += `<div class="actions">
-                        <!--Insertar aquí botones de "Añadir" y "Reset"-->
+                        <button class="new">Añadir</button>
+                        <button class="reset">Reset</button>
                     </div>`;
 
             return view;
@@ -127,26 +221,45 @@
 
         const showView = (pelicula) => {
             // Completar: genera HTML con información de la película
-            // ...
+            let html = `<div class="actions">
+                            <button class="index">Volver</button>
+                        </div>`;
+            // Se controla si no hay nada de información sobre la película
+            if (!pelicula.titulo.trim() && !pelicula.director.trim()) {
+                return `<p>
+                            No hay información disponible soble la película seleccionada
+                        </p> ${html}`;
+            }
 
             return `
-             <p>
-             
-             
-             </p>
-             <div class="actions">
-                <button class="index">Volver</button>
-             </div>`;
+                <p>
+                    La película <strong>${pelicula.titulo.trim() || `"Sin información sobre el título"`}</strong> 
+                    fue dirigida por <strong>${pelicula.director.trim() || `"Sin información sobre el director"`}</strong>
+                </p> ${html}`;
         }
 
         const newView = () => {
             // Completar: genera formulario para crear nuevo quiz
-            // ...
-
             return `<h2>Crear Película</h2>
-                <div class="actions">
-                    <button class="index">Volver</button>
-                </div>`;
+                    <div class="field">
+                        Título <br>
+                        <input  type="text" id="titulo" placeholder="Título">
+                    </div>
+                    <div class="field">
+                        Director <br>
+                        <input  type="text" id="director" placeholder="Director">
+                    </div>
+                    <div class="field">
+                        Miniatura <br>
+                        <input  type="text" id="miniatura" placeholder="URL de la miniatura" value="files/placeholder.png">
+                    </div>
+
+                    <div class="actions">
+                        <button class="create">
+                            Añadir
+                        </button>
+                        <button class="index">Volver</button>
+                    </div>`;
         }
 
 
@@ -161,27 +274,37 @@
 
         const indexContr = async () => {
             mis_peliculas = await getAPI() || [];
-            document.getElementById('main').innerHTML = await indexView(mis_peliculas);
+            document.getElementById('main').innerHTML = indexView(mis_peliculas);
         }
 
-        const showContr = (i) => {
+        const showContr = async (i) => {
             // Completar: controlador que muestra la vista showView()
+            document.getElementById('main').innerHTML = showView(mis_peliculas[i]);
         }
 
         const newContr = () => {
             // Completar: controlador que muestra la vista newView()
+            document.getElementById('main').innerHTML = newView();
         }
 
         const createContr = async () => {
             // Completar: controlador que crea una película nueva en el modelo guardado en myjson
+            let pelicula = {
+                titulo: document.getElementById('titulo').value,
+                director: document.getElementById('director').value, 
+                miniatura: document.getElementById('miniatura').value
+            };
+            mis_peliculas.push(pelicula);
+            await updateAPI(mis_peliculas);
+            indexContr();
         }
 
         const editContr = (i) => {
-            document.getElementById('main').innerHTML = editView(i,  mis_peliculas[i]);
+            document.getElementById('main').innerHTML = editView(i, mis_peliculas[i]);
         }
 
         const updateContr = async (i) => {
-            mis_peliculas[i].titulo   = document.getElementById('titulo').value;
+            mis_peliculas[i].titulo = document.getElementById('titulo').value;
             mis_peliculas[i].director = document.getElementById('director').value;
             mis_peliculas[i].miniatura = document.getElementById('miniatura').value;
             await updateAPI(mis_peliculas);
@@ -191,10 +314,20 @@
         const deleteContr = async (i) => {
             // Completar:  controlador que actualiza el modelo borrando la película seleccionada
             // Genera diálogo de confirmación: botón Aceptar devuelve true, Cancel false
+            let deleteFilm = confirm("Seguro que desea eliminar la película?");
+            if (deleteFilm) {
+                mis_peliculas.splice(i, 1);
+               await updateAPI(mis_peliculas);
+            } 
+            indexContr();
         }
 
         const resetContr = async () => {
             // Completar:  controlador que reinicia el modelo guardado en myjson con las películas originales
+            await updateAPI(mis_peliculas_iniciales);
+            let num = document.querySelectorAll('.movie').length;
+            console.log(num);
+            indexContr();
         }
 
         // ROUTER de eventos
@@ -202,12 +335,17 @@
         const myId = (ev) => Number(ev.target.dataset.myId)
 
         document.addEventListener('click', ev => {
-            if      (matchEvent(ev, '.index'))  indexContr  ();
-            else if (matchEvent(ev, '.edit'))   editContr   (myId(ev));
-            else if (matchEvent(ev, '.update')) updateContr (myId(ev));
+            if (matchEvent(ev, '.index')) indexContr();
+            else if (matchEvent(ev, '.edit')) editContr(myId(ev));
+            else if (matchEvent(ev, '.update')) updateContr(myId(ev));
+            else if (matchEvent(ev, '.show')) showContr(myId(ev));
+            else if (matchEvent(ev, '.new')) newContr();
+            else if (matchEvent(ev, '.create')) createContr();
+            else if (matchEvent(ev, '.delete')) deleteContr(myId(ev));
+            else if (matchEvent(ev, '.reset')) resetContr();
         })
-        
-        
+
+
         // Inicialización        
         document.addEventListener('DOMContentLoaded', initContr);
     </script>
@@ -216,11 +354,10 @@
 <body>
 
     <h1>Mis Películas Favoritas</h1>
-    <div id="main"> 
-      Cargando...
+    <div id="main">
+        Cargando...
     </div>
-    
+
 </body>
+
 </html>
-
-
